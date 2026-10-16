@@ -157,6 +157,24 @@ code{background:var(--bg-alt); padding:2px 6px; border-radius:6px}
 .form-msg.err{color:#c0392b}
 .btn:disabled{opacity:.55; cursor:not-allowed; transform:none}
 
+/* facts & price */
+.facts{list-style:none; display:flex; flex-wrap:wrap; gap:8px 10px; padding:0; margin:0 0 14px}
+.facts li{
+  padding:6px 14px; border:1px solid var(--line); border-radius:999px;
+  background:var(--card); font-size:.9rem; color:var(--muted);
+}
+.facts b{color:var(--ink)}
+.price{margin:0 0 20px; display:flex; flex-wrap:wrap; align-items:baseline; gap:8px}
+.price s{color:var(--muted); font-size:.95rem}
+.price strong{font-size:1.5rem; color:var(--brand)}
+.price-badge{
+  font-size:.78rem; font-weight:700; color:var(--brand);
+  border:1px solid var(--brand); border-radius:999px; padding:2px 10px;
+}
+.muted{color:var(--muted); font-size:.85rem}
+.info s{color:var(--muted)}
+.info strong{color:var(--brand)}
+
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .btn,.pick{transition:none}
