@@ -1,6 +1,6 @@
 // ===== 설정 =====
 // Apps Script 웹 앱 배포 URL (…/exec)을 여기에 붙여넣으세요. README 참고.
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhSeHbhKjRv4DRvB7hbiWxS15t1L1b1Lc-Qlwt0lwfZeSWf_yxX3H3vDD1rllbHq0P5Q/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwG5FbA6-13tya_0jNEKZBXIXj9qstdlUqmtM0svDE2flyFtCgcMWrMWP2AWJGAqiJeg/exec";
 const MAX_PICKS = 2;
 const OPERATING_DAYS = 26; // 월 영업일 가정
 
@@ -131,12 +131,17 @@ form.addEventListener("submit", async e => {
       $("submitBtn").disabled = false;
       return;
     }
-    setMsg(
-      data.status === "대기"
-        ? `대기로 접수되었습니다. (접수번호 ${data.id}) 확인 메일을 보내드렸습니다.`
-        : `신청이 접수되었습니다. (접수번호 ${data.id}) 확인 메일을 보내드렸습니다.`,
-      "ok"
-    );
+    const waiting = data.status === "대기";
+    let msg;
+    if (data.mailSent === false) {
+      // 접수는 됐지만 안내 메일이 나가지 못한 경우: 거짓 안심을 주지 않고 별도 안내를 예고
+      msg = `신청이 접수되었습니다. (접수번호 ${data.id}) 안내 메일 발송이 지연되고 있어요. 곧 별도로 안내드릴게요.`;
+    } else if (waiting) {
+      msg = `대기로 접수되었습니다. (접수번호 ${data.id}) 자리가 나면 입금 안내를 먼저 보내드려요. 접수 확인 메일을 확인해 주세요.`;
+    } else {
+      msg = `신청이 접수되었습니다. (접수번호 ${data.id}) 입금 안내 메일을 보내드렸어요. 입금이 확인되면 확정 메일을 따로 보내드립니다. (메일이 안 보이면 스팸함도 확인해 주세요)`;
+    }
+    setMsg(msg, "ok");
     form.reset();
     updatePicks();
     boxes.forEach(b => (b.checked = false));
