@@ -1,6 +1,6 @@
 // ===== 설정 =====
 // Apps Script 웹 앱 배포 URL (…/exec)을 여기에 붙여넣으세요. README 참고.
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz21Z-4t88f1LqzxhY6Bv0QpBR2tEBT_3LjkHb-0avgUM-lUgow-_hkELjSa2nJtW-1uQ/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydmdoh5bwJ3aoeffw5p8YXqIFhsaIqXAGEQbxjnVbW3QrSaeERIWlpBAHgvRFSTJBiZw/exec";
 const MAX_PICKS = 2;
 const OPERATING_DAYS = 26; // 월 영업일 가정
 
