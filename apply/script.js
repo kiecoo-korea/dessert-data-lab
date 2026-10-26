@@ -1,6 +1,6 @@
 // ===== 설정 =====
 // Apps Script 웹 앱 배포 URL (…/exec)을 여기에 붙여넣으세요. README 참고.
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyB58Ltz6rEzJ5-LIF3Cjh3m3yWYenZdoYImp4qYbmR41IuO60lIItoeceWdc4i0JkfHg/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwhSeHbhKjRv4DRvB7hbiWxS15t1L1b1Lc-Qlwt0lwfZeSWf_yxX3H3vDD1rllbHq0P5Q/exec";
 const MAX_PICKS = 2;
 const OPERATING_DAYS = 26; // 월 영업일 가정
 
@@ -134,7 +134,6 @@ form.addEventListener("submit", async e => {
     const waiting = data.status === "대기";
     let msg;
     if (data.mailSent === false) {
-      // 접수는 됐지만 안내 메일이 나가지 못한 경우: 거짓 안심을 주지 않고 별도 안내를 예고
       msg = `신청이 접수되었습니다. (접수번호 ${data.id}) 안내 메일 발송이 지연되고 있어요. 곧 별도로 안내드릴게요.`;
     } else if (waiting) {
       msg = `대기로 접수되었습니다. (접수번호 ${data.id}) 자리가 나면 입금 안내를 먼저 보내드려요. 접수 확인 메일을 확인해 주세요.`;
@@ -176,6 +175,7 @@ function calc() {
     $("rRate").textContent = "–";
     $("rUnit").textContent = "–";
     $("rMonth").textContent = "–";
+    ["bCost", "bFee", "bMargin"].forEach(id => ($(id).style.width = "0%"));
     msg.textContent = "판매가를 입력해 주세요.";
     return;
   }
@@ -184,6 +184,14 @@ function calc() {
   const rate = (cost / price) * 100;
   const unit = price - unitCost - price * fee;
   const monthly = (unit * qty - unitCost * waste) * OPERATING_DAYS;
+
+  // 판매가 대비 구성 막대 (재료·포장 / 수수료 / 남는 금액)
+  const pc = Math.min(100, (unitCost / price) * 100);
+  const pf = Math.min(100 - pc, fee * 100);
+  const pm = Math.max(0, 100 - pc - pf);
+  $("bCost").style.width = pc + "%";
+  $("bFee").style.width = pf + "%";
+  $("bMargin").style.width = pm + "%";
 
   $("rRate").textContent = rate.toFixed(1) + "%";
   $("rUnit").textContent = won(unit);
